@@ -17,7 +17,7 @@ const Dashboard = () => {
 
   const { contract } = useNFT();
   const { market } = useMarket();
-  const {address} = useAccount()
+  const { address } = useAccount();
 
   const fetchNFTs = async () => {
     setLoading(true);
@@ -48,8 +48,6 @@ const Dashboard = () => {
     }
   };
 
-
-
   useEffect(() => {
     fetchNFTs();
   }, [address, contract]);
@@ -66,18 +64,18 @@ const Dashboard = () => {
       <section className="container mx-auto p-2">
         {loading ? (
           <div className="flex justify-center mt-12">
-          <Vortex
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="vortex-loading"
-          wrapperStyle={{}}
-          wrapperClass="vortex-wrapper"
-          colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
-        />
-        </div>
+            <Vortex
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="vortex-loading"
+              wrapperStyle={{}}
+              wrapperClass="vortex-wrapper"
+              colors={["red", "green", "blue", "yellow", "orange", "purple"]}
+            />
+          </div>
         ) : (
-          <div className="grid grid-cols-4 gap-4 ">
+          <div className="grid p-2 md:p-0 lg:p-0 md:grid-cols-2  lg:grid-cols-4 gap-4">
             {nft.map((item, idx) => {
               return (
                 <div className="border-2 rounded-lg border-purple-500 p-2">

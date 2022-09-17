@@ -93,7 +93,7 @@ const Home: NextPage = () => {
             />
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-4 ">
+          <div className="grid p-2 md:p-0 lg:p-0 md:grid-cols-2  lg:grid-cols-4 gap-4 ">
             {nft.map((item, idx) => {
               return (
                 <div className="border-2 rounded-lg border-purple-500 p-2">

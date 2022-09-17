@@ -16,6 +16,7 @@
     "nft.storage": "^7.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.4.0",
     "react-loader-spinner": "^5.3.4",
     "react-query": "^3.39.2",
     "react-toastify": "^9.0.5",

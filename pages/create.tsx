@@ -80,7 +80,7 @@ function create() {
   // const
 
   return (
-    <section className="w-1/2 mx-auto my-8">
+    <section className="p-2 md:w-1/2 md:mx-auto lg:w-1/2 lg:mx-auto my-8">
       <ToastContainer />
       <form>
         <div className="mb-4">
