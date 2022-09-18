@@ -8,7 +8,11 @@ export const navLink = [
         link:'/create'
     },
     {
-        value:"my assets",
-        link:'/dashboard'
+        value:"listed assets",
+        link:'/listed'
+    },
+    {
+        value:"owned assets",
+        link:'/owned'
     },
 ]

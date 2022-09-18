@@ -9,7 +9,7 @@ import useNFT from "../web3/hooks/useNft";
 import { shortenAddress } from "../utils/helper";
 import { useAccount } from "wagmi";
 
-const Dashboard = () => {
+const Owned = () => {
   const [nft, setNft] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -22,15 +22,17 @@ const Dashboard = () => {
   const fetchNFTs = async () => {
     setLoading(true);
     try {
-      const datas = await market.fetchItemListed();
+      const datas = await market.fetchMyNfts();
       const items: any = await Promise.all(
         datas.map(async (data: any) => {
           let tokenURI = await contract.tokenURI(data.tokenId);
           let formatURI = await tokenURI.replace("ipfs://", pre);
           let meta = await axios.get(formatURI);
+          console.log(meta)
           let price = ethers.utils.formatUnits(data.price.toString(), "ether");
           let formatImage = await meta.data.image.replace("ipfs://", pre);
           let item = {
+            name:meta.data.name,
             price,
             tokenId: data.tokenId.toNumber(),
             seller: data.seller,
@@ -52,7 +54,7 @@ const Dashboard = () => {
     fetchNFTs();
   }, [address, contract]);
 
-  // if (!loading && !nft.length) return <p>No Asset yet</p>;
+  if (!loading && !nft.length) return <p>No Asset yet</p>;
   return (
     <div>
       <Head>
@@ -83,6 +85,10 @@ const Dashboard = () => {
                     <img src={item.image} alt="image" />
                   </div>
                   <p>
+                    <span className="mr-2">Name:</span>
+                    {item.name}
+                  </p>
+                  <p>
                     <span className="mr-2">Seller:</span>
                     {shortenAddress(item.seller)}
                   </p>
@@ -104,4 +110,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Owned;

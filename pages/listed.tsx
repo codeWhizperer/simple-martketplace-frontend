@@ -7,20 +7,22 @@ import useMarket from "../web3/hooks/useMarketPlace";
 import { Contract, ethers } from "ethers";
 import useNFT from "../web3/hooks/useNft";
 import { shortenAddress } from "../utils/helper";
-import {nft as nftAddress} from "../web3/constants/constant"
-const Home: NextPage = () => {
+import { useAccount } from "wagmi";
+
+const Dashboard = () => {
   const [nft, setNft] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   let pre = "https://dweb.link/ipfs/";
 
-  const { market } = useMarket();
   const { contract } = useNFT();
+  const { market } = useMarket();
+  const { address } = useAccount();
 
   const fetchNFTs = async () => {
     setLoading(true);
     try {
-      const datas = await market.fetchMarketItems();
+      const datas = await market.fetchItemListed();
       const items: any = await Promise.all(
         datas.map(async (data: any) => {
           let tokenURI = await contract.tokenURI(data.tokenId);
@@ -47,23 +49,11 @@ const Home: NextPage = () => {
     }
   };
 
-  
-
-  const buyNFT = async (item: any) => {
-    console.log(item)
-    const price = ethers.utils.parseUnits(item.price.toString(), "ether");
-    const transaction = await market.buyAsset(nftAddress,item.tokenId, {
-      value: price,
-    });
-    await transaction.wait();
-    fetchNFTs();
-  };
-
   useEffect(() => {
     fetchNFTs();
-  }, []);
+  }, [address, contract]);
 
-  if (!loading && !nft.length) return <p>No Item in the MarketPlace</p>;
+  if (!loading && !nft.length) return <p>No Asset yet</p>;
   return (
     <div>
       <Head>
@@ -86,10 +76,10 @@ const Home: NextPage = () => {
             />
           </div>
         ) : (
-          <div className="grid p-2 md:p-0 lg:p-0 md:grid-cols-2  lg:grid-cols-4 gap-4 ">
+          <div className="grid p-2 md:p-0 lg:p-0 md:grid-cols-2  lg:grid-cols-4 gap-4">
             {nft.map((item, idx) => {
               return (
-                <div key={idx} className="border-2 rounded-lg border-purple-500 p-2">
+                <div className="border-2 rounded-lg border-purple-500 p-2">
                   <div className="mb-1">
                     <img src={item.image} alt="image" />
                   </div>
@@ -109,12 +99,6 @@ const Home: NextPage = () => {
                     <span className="mr-2">Price:</span>
                     {`${item.price} ETH`}
                   </p>
-                  <button
-                    onClick={() =>buyNFT(item)}
-                    className="bg-purple-500 outline-none  rounded-sm text-white w-full"
-                  >
-                    Buy NFT
-                  </button>
                 </div>
               );
             })}
@@ -125,4 +109,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Dashboard;
